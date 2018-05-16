@@ -1,0 +1,18 @@
+app:
+ host: 127.0.0.1
+ port: 5000
+
+log:
+ folder: /var/log/web
+ requests: False
+
+users:
+ yromero: pbkdf2:sha1:1000$X3CWFxUX$02bdf6cda588373dc341631b94e30c36474e4481
+
+sql_db:
+ type: sqlite
+ name: babylon
+ host: localhost
+ port: 5432
+ user: yromero
+ pass: password

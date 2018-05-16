@@ -1,0 +1,11 @@
+.idea*
+OpenWeatherForecast.egg-info/
+build/
+dist/
+*.pyc
+.eggs/
+coverage*
+coveralls*
+docopt*
+nose*
+.coverage

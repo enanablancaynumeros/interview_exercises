@@ -1,0 +1,25 @@
+    tags:
+      - Babylon test
+    parameters:
+      - name: product_id
+        in: path
+        type: string
+        required: true
+        description: Returns a product given the id
+    responses:
+      200:
+        description: A product with all the information
+        schema:
+          id: Product
+          properties:
+            id:
+              type: int
+              description: Autoincrement value
+            name:
+              type: string
+              description: Product name
+            price:
+              type: string
+              description: Price of the product
+      404:
+        description: Product not found
