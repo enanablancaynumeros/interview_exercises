@@ -121,17 +121,12 @@ def test_d(string_a, string_b, expected):
 
 
 """
-Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
-column is set to 0
+Write an algorithm such that if an element in an MxN matrix is 0, its entire row is set to 0
 """
 
 
 def rows_to_zero(matrix):
-    num_rows = len(matrix)
-    if not num_rows:
-        return matrix
-
-    for index_row in range(num_rows):
+    for index_row in range(len(matrix)):
         if any([True for x in matrix[index_row] if x == 0]):
             matrix[index_row] = [0] * len(matrix[index_row])
 
