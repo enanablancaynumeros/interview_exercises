@@ -147,3 +147,36 @@ def rows_to_zero(matrix):
 ])
 def test_e(matrix, expected):
     assert rows_to_zero(matrix) == expected
+
+
+"""
+Write an algorithm where a string s2 is reordered following the order of the letters of another string s1.
+if one of the characters does not appear in s2, then it should go at the end.
+"""
+
+
+def order_s1_with_s2(string_to_order, order_string):
+    alphabet_size = 26
+
+    positions_hash = {}
+    for i, character in enumerate(order_string):
+        if character not in positions_hash:
+            positions_hash[character] = i
+
+    positions_array = ['' for _ in range(alphabet_size + 1)]
+    for character in string_to_order:
+        if character not in positions_hash:
+            positions_array[-1] += character
+        else:
+            positions_array[positions_hash[character]] += character
+
+    return ''.join([y for x in positions_array for y in x])
+
+
+@pytest.mark.parametrize('string_a,string_b,expected', [
+    ('', '', ''),
+    ('abcd', 'abcd', 'abcd'),
+    ('program', 'grapfo', 'grrapom'),
+])
+def test_order_str(string_a, string_b, expected):
+    assert order_s1_with_s2(string_a, string_b) == expected
