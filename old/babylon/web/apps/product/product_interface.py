@@ -6,6 +6,7 @@ class ProductInterface:
     """
     Interface to the model
     """
+
     def __init__(self, session):
         self.session = session
 
@@ -17,7 +18,9 @@ class ProductInterface:
         return data
 
     def get_all(self):
-        data, errors = product_serializer.dump(self.session.query(ProductModel).all(), many=True)
+        data, errors = product_serializer.dump(
+            self.session.query(ProductModel).all(), many=True
+        )
         return data
 
     def delete(self, product_id):
@@ -58,18 +61,9 @@ class ProductInterface:
 
     def initial_state(self):
         products = [
-            {
-                "name": "Lavender heart",
-                "price": "9.25"
-            },
-            {
-                "name": "Personalised cufflinks",
-                "price": "45.00"
-            },
-            {
-                "name": "Kids T-shirt",
-                "price": "19.95"
-            },
+            {"name": "Lavender heart", "price": "9.25"},
+            {"name": "Personalised cufflinks", "price": "45.00"},
+            {"name": "Kids T-shirt", "price": "19.95"},
         ]
         for product in products:
             self.add(new_data=product)

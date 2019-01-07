@@ -20,18 +20,16 @@ def unique_string_using_hash(input_string):
 def unique_string_not_using_hash(input_string):
     for i, fixed_character in enumerate(input_string):
         if i < len(input_string) - 2:
-            for char_to_compare in input_string[i+1:]:
+            for char_to_compare in input_string[i + 1 :]:
                 if char_to_compare == fixed_character:
                     return False
     return True
 
 
-@pytest.mark.parametrize('input_string,expected', [
-    ('experiment', False),
-    ('', True),
-    ('a', True),
-    ('abcd', True),
-])
+@pytest.mark.parametrize(
+    "input_string,expected",
+    [("experiment", False), ("", True), ("a", True), ("abcd", True)],
+)
 def test_a(input_string, expected):
     assert unique_string_using_hash(input_string) == expected
     assert unique_string_not_using_hash(input_string) == expected
@@ -44,13 +42,10 @@ five characters, including the null character.)
 
 
 def reverse_c_style_string(input_string):
-    return ''.join(sorted(input_string, reverse=True))
+    return "".join(sorted(input_string, reverse=True))
 
 
-@pytest.mark.parametrize('input_string,expected', [
-    ('abcd\0', 'dcba\0'),
-    ('\0', '\0'),
-])
+@pytest.mark.parametrize("input_string,expected", [("abcd\0", "dcba\0"), ("\0", "\0")])
 def test_b(input_string, expected):
     assert reverse_c_style_string(input_string) == expected
 
@@ -70,7 +65,7 @@ def remove_duplicates(input_string):
         second = first + 1
         while second < len(input_string):
             if input_string[first] == input_string[second]:
-                input_string = input_string[:second] + input_string[second+1:]
+                input_string = input_string[:second] + input_string[second + 1 :]
             else:
                 second += 1
         first += 1
@@ -78,13 +73,10 @@ def remove_duplicates(input_string):
     return input_string
 
 
-@pytest.mark.parametrize('input_string,expected', [
-    ('abcd', 'abcd'),
-    ('', ''),
-    ('aaa', 'a'),
-    ('abca', 'abc'),
-    ('abcabbbbad', 'abcd'),
-])
+@pytest.mark.parametrize(
+    "input_string,expected",
+    [("abcd", "abcd"), ("", ""), ("aaa", "a"), ("abca", "abc"), ("abcabbbbad", "abcd")],
+)
 def test_c(input_string, expected):
     assert remove_duplicates(input_string) == expected
 
@@ -99,23 +91,26 @@ def anagrams(string_a, string_b):
         return False
 
     def convert(convert_x):
-        convert_x = convert_x.replace(' ', '').lower()
+        convert_x = convert_x.replace(" ", "").lower()
         return Counter(convert_x)
 
     return convert(string_a) == convert(string_b)
 
 
-@pytest.mark.parametrize('string_a,string_b,expected', [
-    ('', '', False),
-    ('abcd', 'abcd', False),
-    ('ab', 'ba', True),
-    ('alpha', 'palh', False),
-    ('rail safety', 'fairy tales', True),
-    ('restful', 'fluster', True),
-    ('customers', 'store scum', True),
-    ('Ars magna', 'Anagrams', True),
-    ('I am a weakish speller', 'William Shakespeare', True),
-])
+@pytest.mark.parametrize(
+    "string_a,string_b,expected",
+    [
+        ("", "", False),
+        ("abcd", "abcd", False),
+        ("ab", "ba", True),
+        ("alpha", "palh", False),
+        ("rail safety", "fairy tales", True),
+        ("restful", "fluster", True),
+        ("customers", "store scum", True),
+        ("Ars magna", "Anagrams", True),
+        ("I am a weakish speller", "William Shakespeare", True),
+    ],
+)
 def test_d(string_a, string_b, expected):
     assert anagrams(string_a, string_b) == expected
 
@@ -133,18 +128,10 @@ def rows_to_zero(matrix):
     return matrix
 
 
-@pytest.mark.parametrize('matrix,expected', [
-    ([
-         [1, 2, 0],
-         [2, 3, 1],
-         [2, 0, 0],
-     ],
-     [
-         [0, 0, 0],
-         [2, 3, 1],
-         [0, 0, 0],
-     ])
-])
+@pytest.mark.parametrize(
+    "matrix,expected",
+    [([[1, 2, 0], [2, 3, 1], [2, 0, 0]], [[0, 0, 0], [2, 3, 1], [0, 0, 0]])],
+)
 def test_e(matrix, expected):
     assert rows_to_zero(matrix) == expected
 
@@ -163,20 +150,19 @@ def order_s1_with_s2(string_to_order, order_string):
         if character not in positions_hash:
             positions_hash[character] = i
 
-    positions_array = ['' for _ in range(alphabet_size + 1)]
+    positions_array = ["" for _ in range(alphabet_size + 1)]
     for character in string_to_order:
         if character not in positions_hash:
             positions_array[-1] += character
         else:
             positions_array[positions_hash[character]] += character
 
-    return ''.join([y for x in positions_array for y in x])
+    return "".join([y for x in positions_array for y in x])
 
 
-@pytest.mark.parametrize('string_a,string_b,expected', [
-    ('', '', ''),
-    ('abcd', 'abcd', 'abcd'),
-    ('program', 'grapfo', 'grrapom'),
-])
+@pytest.mark.parametrize(
+    "string_a,string_b,expected",
+    [("", "", ""), ("abcd", "abcd", "abcd"), ("program", "grapfo", "grrapom")],
+)
 def test_order_str(string_a, string_b, expected):
     assert order_s1_with_s2(string_a, string_b) == expected

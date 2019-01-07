@@ -11,6 +11,7 @@ def stack_exceptions(f):
             return -1
         except OverflowError:
             return -1
+
     return wrapper
 
 
@@ -51,6 +52,7 @@ def test_1():
 
     test_string = "99999***"
     nose.tools.assert_equal(solution(test_string), -1)
+
 
 #
 # def test_2():

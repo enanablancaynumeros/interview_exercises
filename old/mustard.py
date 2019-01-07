@@ -19,7 +19,9 @@ def get_price_from_seconds(duration_in_seconds):
 
 def get_index_free_call(hash_map_time):
     max_value = max(hash_map_time.values())
-    top_numbers = list(it.ifilter(lambda x: hash_map_time[x] == max_value, hash_map_time))
+    top_numbers = list(
+        it.ifilter(lambda x: hash_map_time[x] == max_value, hash_map_time)
+    )
     return sorted(top_numbers, key=lambda x: sum(map(int, x.split("-"))))[0]
 
 
@@ -42,6 +44,7 @@ def test_1():
 
     test_string = "00:01:07,400-234-090\n00:05:01,701-080-080\n00:05:00,400-234-090\n00:01:06,701-080-080"
     nose.tools.assert_equal(solution(test_string), 1098)
+
 
 #
 # def test_2():

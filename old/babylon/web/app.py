@@ -31,14 +31,15 @@ def register_general_endpoints(given_app):
     @given_app.route("/spec")
     def swagger_spec():
         swag = swagger(given_app)
-        swag['info']['version'] = "1.0"
-        swag['info']['title'] = "Babylon test"
-        swag['info']['basePath'] = "/v1"
-        swag['info']['produces'] = "application/json"
+        swag["info"]["version"] = "1.0"
+        swag["info"]["title"] = "Babylon test"
+        swag["info"]["basePath"] = "/v1"
+        swag["info"]["produces"] = "application/json"
         return jsonify(swag)
 
     from web.apps.product.product_view import product_app_v1
-    given_app.register_blueprint(product_app_v1, url_prefix='/v1')
+
+    given_app.register_blueprint(product_app_v1, url_prefix="/v1")
 
 
 app, db, manager = create_app()

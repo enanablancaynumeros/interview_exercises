@@ -21,5 +21,3 @@ class GetInfoAbstract(metaclass=ABCMeta):
     @abstractmethod
     def get_db_connection(self):
         pass
-
-

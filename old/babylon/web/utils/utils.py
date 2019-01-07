@@ -17,15 +17,19 @@ def check_auth(username, password):
     :param username:
     """
     valid_user = username in global_settings().get("users")
-    return valid_user and check_password(global_settings().get("users").get(username), password)
+    return valid_user and check_password(
+        global_settings().get("users").get(username), password
+    )
 
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
     return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        "Could not verify your access level for that URL.\n"
+        "You have to login with proper credentials",
+        401,
+        {"WWW-Authenticate": 'Basic realm="Login Required"'},
+    )
 
 
 def check_password(pw_hash, password):
@@ -39,6 +43,7 @@ def requires_auth(f):
         if not auth or not check_auth(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
+
     return decorated
 
 
@@ -58,8 +63,10 @@ def change_dir(newdir):
 
 
 def auth_headers(username, password):
-    user_pass = base64.b64encode(bytes("{}:{}".format(username, password), 'ascii')).decode('ascii')
-    return {'Authorization': 'Basic ' + user_pass}
+    user_pass = base64.b64encode(
+        bytes("{}:{}".format(username, password), "ascii")
+    ).decode("ascii")
+    return {"Authorization": "Basic " + user_pass}
 
 
 @contextmanager

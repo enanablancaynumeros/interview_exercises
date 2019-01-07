@@ -7,14 +7,14 @@ import sys
 import unittest
 from inspect import isfunction
 from nose.config import Config
-from nose.failure import Failure # for backwards compatibility
+from nose.failure import Failure  # for backwards compatibility
 from nose.util import resolve_name, test_address, try_run
 import collections
 
 log = logging.getLogger(__name__)
 
 
-__all__ = ['Test']
+__all__ = ["Test"]
 
 
 class Test(unittest.TestCase):
@@ -24,13 +24,16 @@ class Test(unittest.TestCase):
     class. To access the actual test case that will be run, access the
     test property of the nose.case.Test instance.
     """
-    __test__ = False # do not collect
+
+    __test__ = False  # do not collect
+
     def __init__(self, test, config=None, resultProxy=None):
         # sanity check
         if not isinstance(test, collections.Callable):
-            raise TypeError("nose.case.Test called with argument %r that "
-                            "is not callable. A callable is required."
-                            % test)
+            raise TypeError(
+                "nose.case.Test called with argument %r that "
+                "is not callable. A callable is required." % test
+            )
         self.test = test
         if config is None:
             config = Config()
@@ -90,7 +93,7 @@ class Test(unittest.TestCase):
         fed back as input to loadTestByName and (assuming the same
         plugin configuration) result in the loading of this test.
         """
-        if hasattr(self.test, 'address'):
+        if hasattr(self.test, "address"):
             return self.test.address()
         else:
             # not a nose case
@@ -110,8 +113,10 @@ class Test(unittest.TestCase):
         except AttributeError:
             pass
         return None
-    context = property(_context, None, None,
-                      """Get the context object of this test (if any).""")
+
+    context = property(
+        _context, None, None, """Get the context object of this test (if any)."""
+    )
 
     def run(self, result):
         """Modified run for the test wrapper.
@@ -159,12 +164,11 @@ class Test(unittest.TestCase):
         # with multiline docstrings.
         test = self.test
         try:
-            test._testMethodDoc = test._testMethodDoc.strip()# 2.5
+            test._testMethodDoc = test._testMethodDoc.strip()  # 2.5
         except AttributeError:
             try:
                 # 2.4 and earlier
-                test._TestCase__testMethodDoc = \
-                    test._TestCase__testMethodDoc.strip()
+                test._TestCase__testMethodDoc = test._TestCase__testMethodDoc.strip()
             except AttributeError:
                 pass
         # 2.7 compat: shortDescription() always returns something
@@ -189,7 +193,8 @@ class Test(unittest.TestCase):
 class TestBase(unittest.TestCase):
     """Common functionality for FunctionTestCase and MethodTestCase.
     """
-    __test__ = False # do not collect
+
+    __test__ = False  # do not collect
 
     def id(self):
         return str(self)
@@ -198,10 +203,10 @@ class TestBase(unittest.TestCase):
         self.test(*self.arg)
 
     def shortDescription(self):
-        if hasattr(self.test, 'description'):
+        if hasattr(self.test, "description"):
             return self.test.description
         func, arg = self._descriptors()
-        doc = getattr(func, '__doc__', None)
+        doc = getattr(func, "__doc__", None)
         if not doc:
             doc = str(self)
         return doc.strip().split("\n")[0].strip()
@@ -213,10 +218,10 @@ class FunctionTestCase(TestBase):
     Don't use this class directly; it is used internally in nose to
     create test cases for test functions.
     """
-    __test__ = False # do not collect
 
-    def __init__(self, test, setUp=None, tearDown=None, arg=tuple(),
-                 descriptor=None):
+    __test__ = False  # do not collect
+
+    def __init__(self, test, setUp=None, tearDown=None, arg=tuple(), descriptor=None):
         """Initialize the MethodTestCase.
 
         Required argument:
@@ -255,8 +260,8 @@ class FunctionTestCase(TestBase):
 
     def _context(self):
         return resolve_name(self.test.__module__)
-    context = property(_context, None, None,
-                      """Get context (module) of this test""")
+
+    context = property(_context, None, None, """Get context (module) of this test""")
 
     def setUp(self):
         """Run any setup function attached to the test function
@@ -264,7 +269,7 @@ class FunctionTestCase(TestBase):
         if self.setUpFunc:
             self.setUpFunc()
         else:
-            names = ('setup', 'setUp', 'setUpFunc')
+            names = ("setup", "setUp", "setUpFunc")
             try_run(self.test, names)
 
     def tearDown(self):
@@ -273,12 +278,12 @@ class FunctionTestCase(TestBase):
         if self.tearDownFunc:
             self.tearDownFunc()
         else:
-            names = ('teardown', 'tearDown', 'tearDownFunc')
+            names = ("teardown", "tearDown", "tearDownFunc")
             try_run(self.test, names)
 
     def __str__(self):
         func, arg = self._descriptors()
-        if hasattr(func, 'compat_func_name'):
+        if hasattr(func, "compat_func_name"):
             name = func.compat_func_name
         else:
             name = func.__name__
@@ -289,6 +294,7 @@ class FunctionTestCase(TestBase):
         # in cases where test module of the same name was seen in
         # another directory (old fromDirectory)
         return name
+
     __repr__ = __str__
 
     def _descriptors(self):
@@ -311,7 +317,8 @@ class MethodTestCase(TestBase):
     Don't use this class directly; it is used internally in nose to
     create test cases for test methods.
     """
-    __test__ = False # do not collect
+
+    __test__ = False  # do not collect
 
     def __init__(self, method, test=None, arg=tuple(), descriptor=None):
         """Initialize the MethodTestCase.
@@ -341,7 +348,9 @@ class MethodTestCase(TestBase):
         self.arg = arg
         self.descriptor = descriptor
         if isfunction(method):
-            raise ValueError("Unbound methods must be wrapped using pyversion.unbound_method before passing to MethodTestCase")
+            raise ValueError(
+                "Unbound methods must be wrapped using pyversion.unbound_method before passing to MethodTestCase"
+            )
         self.cls = method.__self__.__class__
         self.inst = self.cls()
         if self.test is None:
@@ -351,16 +360,15 @@ class MethodTestCase(TestBase):
 
     def __str__(self):
         func, arg = self._descriptors()
-        if hasattr(func, 'compat_func_name'):
+        if hasattr(func, "compat_func_name"):
             name = func.compat_func_name
         else:
             name = func.__name__
-        name = "%s.%s.%s" % (self.cls.__module__,
-                             self.cls.__name__,
-                             name)
+        name = "%s.%s.%s" % (self.cls.__module__, self.cls.__name__, name)
         if arg:
             name = "%s%s" % (name, arg)
         return name
+
     __repr__ = __str__
 
     def address(self):
@@ -375,14 +383,14 @@ class MethodTestCase(TestBase):
 
     def _context(self):
         return self.cls
-    context = property(_context, None, None,
-                      """Get context (class) of this test""")
+
+    context = property(_context, None, None, """Get context (class) of this test""")
 
     def setUp(self):
-        try_run(self.inst, ('setup', 'setUp'))
+        try_run(self.inst, ("setup", "setUp"))
 
     def tearDown(self):
-        try_run(self.inst, ('teardown', 'tearDown'))
+        try_run(self.inst, ("teardown", "tearDown"))
 
     def _descriptors(self):
         """Get the descriptors of the test method: the method and

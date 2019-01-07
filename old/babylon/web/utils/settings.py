@@ -8,6 +8,7 @@ from web.constants import CFG_CACHE_TTL, CFG_FILE_PATH, CFG_FILE_PATH_ENV
 class SettingCache:
     """ The settings cache! Borg pattern in here
     """
+
     __shared_state = {}
 
     def __init__(self, update_callback=None):
@@ -17,7 +18,7 @@ class SettingCache:
             self.update_callback = update_callback
 
         now_time = datetime.utcnow() + timedelta(seconds=self.refresh)
-        if not hasattr(self, 'last_update') or now_time > self.last_update:
+        if not hasattr(self, "last_update") or now_time > self.last_update:
             self.update()
 
     def update(self):
@@ -43,17 +44,16 @@ def read_settings():
     """
     f_path = os.environ.get(CFG_FILE_PATH_ENV, "").strip()
     if os.path.exists(f_path):
-        with open(f_path, 'r') as f:
+        with open(f_path, "r") as f:
             return yaml.load(f)
     elif os.path.exists(CFG_FILE_PATH):
-        with open(CFG_FILE_PATH, 'r') as f:
+        with open(CFG_FILE_PATH, "r") as f:
             return yaml.load(f)
     else:
         msg = "Can't find settings neither {} nor {}".format(
-            CFG_FILE_PATH_ENV,
-            CFG_FILE_PATH)
+            CFG_FILE_PATH_ENV, CFG_FILE_PATH
+        )
         raise Exception(msg)
 
+
 SettingCache(read_settings)
-
-

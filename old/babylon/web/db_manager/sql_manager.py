@@ -6,18 +6,10 @@ from web.utils.utils import get_db_session_scope
 from web.utils.settings import global_settings
 
 
-def get_sql_url(db_type_settings,
-                user,
-                password,
-                db_host_settings,
-                port,
-                db_name):
-    host = "{}://{}:{}@{}:{}/{}".format(db_type_settings,
-                                        user,
-                                        password,
-                                        db_host_settings,
-                                        port,
-                                        db_name)
+def get_sql_url(db_type_settings, user, password, db_host_settings, port, db_name):
+    host = "{}://{}:{}@{}:{}/{}".format(
+        db_type_settings, user, password, db_host_settings, port, db_name
+    )
     return host
 
 
@@ -32,22 +24,23 @@ def get_db_host_context_based():
         port = global_settings().get("sql_db").get("port")
         db_name = global_settings().get("sql_db").get("name")
 
-        host = get_sql_url(db_type_settings=db_type_settings,
-                           user=user,
-                           password=password,
-                           db_host_settings=db_host_settings,
-                           port=port,
-                           db_name=db_name
-                           )
+        host = get_sql_url(
+            db_type_settings=db_type_settings,
+            user=user,
+            password=password,
+            db_host_settings=db_host_settings,
+            port=port,
+            db_name=db_name,
+        )
     return host
 
 
 def build_and_get_db_session(app):
     host = get_db_host_context_based()
-    app.config['SQLALCHEMY_DATABASE_URI'] = host
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
-        create_database(app.config['SQLALCHEMY_DATABASE_URI'])
+    app.config["SQLALCHEMY_DATABASE_URI"] = host
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+    if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+        create_database(app.config["SQLALCHEMY_DATABASE_URI"])
 
     db = SQLAlchemy(app)
     return db
@@ -59,8 +52,8 @@ def import_apps_models():
 
 def load_db_models(db_object, app):
     import_apps_models()
-    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
-        create_database(app.config['SQLALCHEMY_DATABASE_URI'])
+    if not database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
+        create_database(app.config["SQLALCHEMY_DATABASE_URI"])
     db_object.drop_all()
     db_object.create_all()
     load_initial_state(db_object)
@@ -68,12 +61,14 @@ def load_db_models(db_object, app):
 
 def load_initial_state(db_object):
     from web.apps.product.product_interface import ProductInterface
+
     with get_db_session_scope(db_object.session) as db_session:
         ProductInterface(db_session).initial_state()
 
 
 def remove_database(db_object):
     from web.app import app
+
     if database_exists(db_object.engine.url):
         drop_database(db_object.engine.url)
         create_database(db_object.engine.url)

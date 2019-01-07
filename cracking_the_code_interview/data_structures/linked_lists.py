@@ -8,7 +8,6 @@ class Node:
 
 
 class LinkedList:
-
     def __init__(self, initial_list=None):
         self.first_item = None
         if initial_list is not None:
@@ -50,12 +49,10 @@ class LinkedList:
                         current_node = current_node.next
 
 
-@pytest.mark.parametrize('item_to_remove,given_linked_list,expected', [
-    (1, [1], []),
-    (1, [], []),
-    (1, [2, 3, 1], [2, 3]),
-    (1, [2, 3], [2, 3]),
-])
+@pytest.mark.parametrize(
+    "item_to_remove,given_linked_list,expected",
+    [(1, [1], []), (1, [], []), (1, [2, 3, 1], [2, 3]), (1, [2, 3], [2, 3])],
+)
 def test_basics(item_to_remove, given_linked_list, expected):
     own_linked_list = LinkedList()
     for linked_item in given_linked_list:
@@ -83,13 +80,16 @@ def remove_duplicates(given_linked_list):
             current_node = current_node.next
 
 
-@pytest.mark.parametrize('given_linked_list,expected', [
-    (LinkedList([1]), [1]),
-    (LinkedList([1, 1]), [1]),
-    (LinkedList([2, 3, 2]), [2, 3]),
-    (LinkedList([]), []),
-    (LinkedList([2, 2, 2, 2, 3, 2]), [2, 3]),
-])
+@pytest.mark.parametrize(
+    "given_linked_list,expected",
+    [
+        (LinkedList([1]), [1]),
+        (LinkedList([1, 1]), [1]),
+        (LinkedList([2, 3, 2]), [2, 3]),
+        (LinkedList([]), []),
+        (LinkedList([2, 2, 2, 2, 3, 2]), [2, 3]),
+    ],
+)
 def test_remove_duplicates(given_linked_list, expected):
     remove_duplicates(given_linked_list)
     assert given_linked_list.as_list() == expected

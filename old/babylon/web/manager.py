@@ -7,6 +7,7 @@ from web.app import manager
 @manager.command
 def unittests():
     from web.tests.unittests.unittests import run_unittests
+
     project_folder = os.path.abspath(os.path.dirname(__file__))
     run_unittests(project_folder)
 

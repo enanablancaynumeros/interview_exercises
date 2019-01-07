@@ -25,7 +25,7 @@ def create_logger(target):
     return logger
 
 
-def logger(target='SE'):
+def logger(target="SE"):
     """Returns logger by target
     """
     try:
