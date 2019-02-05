@@ -18,7 +18,7 @@ class Solution:
                 if self.search_from_letter((i, j), board, word):
                     return True
         return False
-    
+
     def search_from_letter(self, coordinates, grid, word, visited=None):
         if visited is None:
             visited = set()
@@ -26,12 +26,18 @@ class Solution:
             return False
         elif len(word) == 1:
             return True
-        
+
         visited.add(coordinates)
         for neighbour in ((0, 1), (0, -1), (-1, 0), (1, 0)):
             neighbour = (coordinates[0] + neighbour[0], coordinates[1] + neighbour[1])
-            if 0 <= neighbour[0] < len(grid) and 0 <= neighbour[1] < len(grid[0]) and neighbour not in visited:
-                if self.search_from_letter(neighbour, grid, word[1:], visited=copy(visited)):
+            if (
+                0 <= neighbour[0] < len(grid)
+                and 0 <= neighbour[1] < len(grid[0])
+                and neighbour not in visited
+            ):
+                if self.search_from_letter(
+                    neighbour, grid, word[1:], visited=copy(visited)
+                ):
                     return True
         return False
 
@@ -39,8 +45,12 @@ class Solution:
 @pytest.mark.parametrize(
     "board,word,expected",
     [
-        ([["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED", True),
-        ([["a","a"]], "aaa", False)
+        (
+            [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+            "ABCCED",
+            True,
+        ),
+        ([["a", "a"]], "aaa", False),
     ],
 )
 def tests_a(board, word, expected):

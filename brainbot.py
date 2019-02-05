@@ -1,7 +1,7 @@
 import os
 
 
-def print_directory_contents(s_path:str) -> None:
+def print_directory_contents(s_path: str) -> None:
     """
     This function takes the name of a directory 
     and prints out the paths files within that 

@@ -7,7 +7,9 @@ class TreeNode:
         self.left = None
         self.right = None
 
+
 counter = Counter()
+
 
 class Solution:
     def findFrequentTreeSum(self, root):
@@ -27,7 +29,7 @@ class Solution:
             elif frequency == highest_frequency:
                 most_frequent.append(total_sum)
         return most_frequent
-    
+
     def _findFrequentTreeSum(self, root):
         """
         :type root: TreeNode
@@ -42,7 +44,7 @@ class Solution:
             left_sum = self._findFrequentTreeSum(root.left)
         if root.right is not None:
             right_sum = self._findFrequentTreeSum(root.right)
-            
+
         counter[root.val + left_sum + right_sum] += 1
         return root.val + left_sum + right_sum
 
